@@ -32,3 +32,11 @@
  *     background-image: url('/some/image/file.png');
  * }
  */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+body {
+  background-color: #f3f7f9;
+}

@@ -1,9 +1,7 @@
 <template>
   <div>
     <appbar></appbar>
-    <div class="container mx-auto my-4">
-      <nuxt/>
-    </div>
+    <nuxt/>
   </div>
 </template>
 

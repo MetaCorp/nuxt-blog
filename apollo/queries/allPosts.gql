@@ -1,5 +1,6 @@
-query allPosts ($sortField: String, $sortOrder: String) {
-  allPosts(sortField: $sortField, sortOrder: $sortOrder) {
+query allPosts ($page: Int, $perPage: Int, $sortField: String, $sortOrder: String) {
+  allPosts(page: $page, perPage: $perPage, sortField: $sortField, sortOrder: $sortOrder) {
+    id
     title
     views
     User {

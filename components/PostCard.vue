@@ -1,23 +1,22 @@
 <template>
-  <div class="m-2 rounded overflow-hidden shadow-md">
-    <a :href="postUrl" target="_blank">
+  <div class="m-2 rounded overflow-hidden shadow-md bg-white">
+    <nuxt-link :to="'/post/' + post.id">
       <div class="relative">
         <img class="w-full" src="http://via.placeholder.com/350x150">
-        <span class="absolute pin-b pin-r inline-block bg-grey-lighter px-2 py-1 m-2 text-sm font-semibold text-grey-darker">-</span>
       </div>
-    </a>
-    <div class="px-6 py-4">
-      <a :href="postUrl">
+    </nuxt-link>
+    <div class="px-6 py-4 flex flex-col items-center">
+      <span class="text-grey mb-2">Growth</span>
+      <nuxt-link :to="'/post/' + post.id">
         <div class="font-bold text-xl mb-2">{{ post.title }}</div>
-      </a>
-      <a :href="userUrl">
+      </nuxt-link>
+      <span>
         <p class="text-grey-darker text-base">
-          {{ post.User.name }}
+          <nuxt-link :to="'/user/' + post.User.id">
+            {{ post.User.name }} • {{ post.views | vues }}
+          </nuxt-link>
         </p>
-      </a>
-      <p class="text-grey-darker text-base">
-        {{ post.views | vues }} • {{ post.publishedAt | fromNow }}
-      </p>
+      </span>
     </div>
   </div>
 </template>
@@ -26,21 +25,9 @@
 export default {
   props: {
     post: Object
-  },
-  computed: {
-    postUrl () {
-      return '/posts/' + this.post.id
-    },
-    userUrl () {
-      return '/users/' + this.post.User.id
-    }
   }
 }
 </script>
 
 <style scoped>
-a {
-  text-decoration: none;
-  color: inherit;
-}
 </style>

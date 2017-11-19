@@ -1,14 +1,15 @@
 <template>
   <div>
-    <nuxt-link to="/test">To Test</nuxt-link>
-    <post-filter :filters="filters" v-model="currentFilter"></post-filter>
+    <!-- <post-filter :filters="filters" v-model="currentFilter"></post-filter> -->
+    <post-big-card :post="allPosts[0]"></post-big-card>
     <post-list :posts="allPosts"></post-list>
-    <!-- <post-load-more :fetchData="loadMore" :loading="loading" :hasMore="posts.nextPageToken"></post-load-more> -->
+    <post-load-more :fetchData="loadMore" :loading="loading" :hasMore="hasMore"></post-load-more>
   </div>
 </template>
 
 <script>
 import allPosts from '@/apollo/queries/allPosts'
+import PostBigCard from '@/components/PostBigCard'
 import PostList from '@/components/PostList'
 import PostFilter from '@/components/PostFilter'
 import PostLoadMore from '@/components/PostLoadMore'
@@ -18,40 +19,51 @@ export default {
     return {
       currentFilter: 'Development',
       filters: ['Music', 'Physic', 'Development'],
-      allPosts: {},
-      loading: false
+      allPosts: [],
+      loading: false,
+      hasMore: true,
+      page: 0
     }
   },
   apollo: {
     allPosts: {
       prefetch: true,
-      query: allPosts
+      query: allPosts,
+      variables () {
+        return {
+          page: 0,
+          perPage: 5
+        }
+      }
     }
   },
-  // methods: {
-  //   loadMore () {
-  //     this.loading = true
-  //     this.$apollo.queries.videos.fetchMore({
-  //       variables: {
-  //         pageToken: this.videos.nextPageToken
-  //       },
-  //       updateQuery: (previousResult, { fetchMoreResult }) => {
-  //         console.log('fetchMoreResult :', fetchMoreResult)
-  //         this.loading = false
-  //         return {
-  //           videos: {
-  //             ...fetchMoreResult.videos,
-  //             items: [...previousResult.videos.items, ...fetchMoreResult.videos.items]
-  //           }
-  //         }
-  //       }
-  //     })
-  //   }
-  // },
+  methods: {
+    loadMore () {
+      this.loading = true
+      this.page++
+      this.$apollo.queries.allPosts.fetchMore({
+        variables: {
+          page: this.page,
+          perPage: 5
+        },
+        updateQuery: (previousResult, { fetchMoreResult }) => {
+          if (fetchMoreResult.allPosts.length === 0) this.hasMore = false
+          this.loading = false
+          return {
+            allPosts: [
+              ...previousResult.allPosts,
+              ...fetchMoreResult.allPosts
+            ]
+          }
+        }
+      })
+    }
+  },
   components: {
     PostFilter,
     PostList,
-    PostLoadMore
+    PostLoadMore,
+    PostBigCard
   }
 }
 </script>

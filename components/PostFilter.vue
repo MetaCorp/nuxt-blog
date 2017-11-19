@@ -1,7 +1,7 @@
 <template>
   <div class="flex justify-end mx-2">
     <div class="relative">
-      <select v-model="currentFilter" class="block appearance-none bg-grey-lighter border border-grey-lighter text-grey-darker py-3 px-4 pr-8 rounded">
+      <select v-model="currentFilter" class="block appearance-none bg-grey-light border border-grey-light text-grey-darker py-3 px-4 pr-8 rounded">
         <option v-for="(filter, i) in filters" :key="i">{{ filter }}</option>
       </select>
       <div class="pointer-events-none absolute pin-y pin-r flex items-center px-2 text-grey-darker">
