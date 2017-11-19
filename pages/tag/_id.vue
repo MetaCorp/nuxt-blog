@@ -1,5 +1,6 @@
 <template>
   <div>
+    <post-sort :sortFields="sortFields" v-model="sort"></post-sort>
     <post-list :posts="allPosts"></post-list>
     <post-load-more :fetchData="loadMore" :loading="loading" :hasMore="hasMore"></post-load-more>
   </div>
@@ -9,6 +10,12 @@
 import allPosts from '@/apollo/queries/allPosts'
 import PostList from '@/components/PostList'
 import PostLoadMore from '@/components/PostLoadMore'
+import PostSort from '@/components/PostSort'
+
+const sortFieldBinding = {
+  Date: 'publishedAt',
+  Views: 'views'
+}
 
 export default {
   data () {
@@ -16,7 +23,12 @@ export default {
       allPosts: [],
       loading: false,
       hasMore: true,
-      page: 0
+      page: 0,
+      sortFields: ['Date', 'Views'],
+      sort: {
+        field: 'Date',
+        order: 'desc'
+      }
     }
   },
   apollo: {
@@ -39,7 +51,9 @@ export default {
       this.$apollo.queries.allPosts.fetchMore({
         variables: {
           page: this.page,
-          perPage: 5
+          perPage: 5,
+          sortField: sortFieldBinding[this.sort.field],
+          sortOrder: this.sort.order
         },
         updateQuery: (previousResult, { fetchMoreResult }) => {
           if (fetchMoreResult.allPosts.length === 0) this.hasMore = false
@@ -54,9 +68,22 @@ export default {
       })
     }
   },
+  watch: {
+    sort (val, oldVal) {
+      this.page = 0
+      this.hasMore = true
+      this.$apollo.queries.allPosts.executeApollo({
+        page: this.page,
+        perPage: 5,
+        sortField: sortFieldBinding[this.sort.field],
+        sortOrder: this.sort.order
+      })
+    }
+  },
   components: {
     PostList,
-    PostLoadMore
+    PostLoadMore,
+    PostSort
   },
   validate: ({ params }) => /^\d+$/.test(params.id)
 }

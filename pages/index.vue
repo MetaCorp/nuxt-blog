@@ -2,7 +2,7 @@
   <div>
     <post-big-card :post="allPosts[0]"></post-big-card>
     <div class="mt-6">
-      <post-filter :filters="filters" v-model="filter"></post-filter>
+      <!-- <post-filter :filters="filters" v-model="filter"></post-filter> -->
       <post-sort :sortFields="sortFields" v-model="sort" ></post-sort>
       <post-list :posts="allPosts"></post-list>
       <post-load-more :fetchData="loadMore" :loading="loading" :hasMore="hasMore"></post-load-more>
@@ -18,7 +18,7 @@ import PostFilter from '@/components/PostFilter'
 import PostSort from '@/components/PostSort'
 import PostLoadMore from '@/components/PostLoadMore'
 
-const sortFieldsBinding = {
+const sortFieldBinding = {
   Date: 'publishedAt',
   Views: 'views'
 }
@@ -61,7 +61,7 @@ export default {
         variables: {
           page: this.page,
           perPage: 5,
-          sortField: sortFieldsBinding[this.sort.field],
+          sortField: sortFieldBinding[this.sort.field],
           sortOrder: this.sort.order
         },
         updateQuery: (previousResult, { fetchMoreResult }) => {
@@ -79,12 +79,12 @@ export default {
   },
   watch: {
     sort (val, oldval) {
-      this.page = 0
+      this.page = 0// TODO Fix page (is not 0 each time)
       this.hasMore = true
       this.$apollo.queries.allPosts.executeApollo({
         page: this.page,
         perPage: 5,
-        sortField: sortFieldsBinding[this.sort.field],
+        sortField: sortFieldBinding[this.sort.field],
         sortOrder: this.sort.order
       })
     }
