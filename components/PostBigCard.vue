@@ -11,8 +11,8 @@
       <span>
         <p class="text-grey-lightest text-base">
           <nuxt-link :to="'/user/' + post.User.id">
-            {{ post.User.name }} • {{ post.views | vues }}
-          </nuxt-link>
+            {{ post.User.name }}
+          </nuxt-link> • {{ post.views | vues }}
         </p>
       </span>
     </div>

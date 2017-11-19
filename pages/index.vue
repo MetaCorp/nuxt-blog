@@ -2,7 +2,8 @@
   <div>
     <post-big-card :post="allPosts[0]"></post-big-card>
     <div class="mt-6">
-      <post-filter :filters="filters" v-model="currentFilter"></post-filter>
+      <post-filter :filters="filters" v-model="filter"></post-filter>
+      <post-sort :sortFields="sortFields" v-model="sort" ></post-sort>
       <post-list :posts="allPosts"></post-list>
       <post-load-more :fetchData="loadMore" :loading="loading" :hasMore="hasMore"></post-load-more>
     </div>
@@ -14,13 +15,24 @@ import allPosts from '@/apollo/queries/allPosts'
 import PostBigCard from '@/components/PostBigCard'
 import PostList from '@/components/PostList'
 import PostFilter from '@/components/PostFilter'
+import PostSort from '@/components/PostSort'
 import PostLoadMore from '@/components/PostLoadMore'
+
+const sortFieldsBinding = {
+  Date: 'publishedAt',
+  Views: 'views'
+}
 
 export default {
   data () {
     return {
-      currentFilter: 'Development',
       filters: ['Music', 'Physic', 'Development'],
+      filter: 'Development',
+      sortFields: ['Date', 'Views'],
+      sort: {
+        field: 'Date',
+        order: 'desc'
+      },
       allPosts: [],
       loading: false,
       hasMore: true,
@@ -34,7 +46,9 @@ export default {
       variables () {
         return {
           page: 0,
-          perPage: 5
+          perPage: 5,
+          sortField: 'publishedAt',
+          sortOrder: 'desc'
         }
       }
     }
@@ -46,7 +60,9 @@ export default {
       this.$apollo.queries.allPosts.fetchMore({
         variables: {
           page: this.page,
-          perPage: 5
+          perPage: 5,
+          sortField: sortFieldsBinding[this.sort.field],
+          sortOrder: this.sort.order
         },
         updateQuery: (previousResult, { fetchMoreResult }) => {
           if (fetchMoreResult.allPosts.length === 0) this.hasMore = false
@@ -61,11 +77,24 @@ export default {
       })
     }
   },
+  watch: {
+    sort (val, oldval) {
+      this.page = 0
+      this.hasMore = true
+      this.$apollo.queries.allPosts.executeApollo({
+        page: this.page,
+        perPage: 5,
+        sortField: sortFieldsBinding[this.sort.field],
+        sortOrder: this.sort.order
+      })
+    }
+  },
   components: {
     PostFilter,
     PostList,
     PostLoadMore,
-    PostBigCard
+    PostBigCard,
+    PostSort
   }
 }
 </script>
