@@ -4,6 +4,7 @@ query getPost ($id: ID!) {
     title
     body
     User {
+      id
       name
     }
     Comments {

@@ -6,7 +6,9 @@
       </div>
     </nuxt-link>
     <div class="px-6 py-4 flex flex-col items-center">
-      <span class="text-grey mb-2">Growth</span>
+      <nuxt-link v-if="post.Tag" :to="'/tag/' + post.Tag.id">
+        <div class="text-grey mb-2 capitalize">{{ post.Tag.name }}</div>
+      </nuxt-link>
       <nuxt-link :to="'/post/' + post.id">
         <div class="font-bold text-xl mb-2">{{ post.title }}</div>
       </nuxt-link>

@@ -2,7 +2,9 @@
   <div class="m-2 rounded overflow-hidden shadow-md bg-white relative">
     <img class="w-full" src="http://via.placeholder.com/350x150">
     <div class="absolute pin-b pin-l m-8">
-      <div class="text-xl text-grey-lighter mb-2">Growth</div>
+      <nuxt-link v-if="post.Tag" :to="'/tag/' + post.Tag.id">
+        <div class="text-grey mb-2 capitalize">{{ post.Tag.name }}</div>
+      </nuxt-link>
       <nuxt-link :to="'/post/' + post.id">
         <div class="font-bold text-2xl mb-2 text-white">{{ post.title }}</div>
       </nuxt-link>

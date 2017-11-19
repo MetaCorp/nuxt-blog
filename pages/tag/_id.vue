@@ -1,26 +1,18 @@
 <template>
   <div>
-    <post-big-card :post="allPosts[0]"></post-big-card>
-    <div class="mt-6">
-      <post-filter :filters="filters" v-model="currentFilter"></post-filter>
-      <post-list :posts="allPosts"></post-list>
-      <post-load-more :fetchData="loadMore" :loading="loading" :hasMore="hasMore"></post-load-more>
-    </div>
+    <post-list :posts="allPosts"></post-list>
+    <post-load-more :fetchData="loadMore" :loading="loading" :hasMore="hasMore"></post-load-more>
   </div>
 </template>
 
 <script>
 import allPosts from '@/apollo/queries/allPosts'
-import PostBigCard from '@/components/PostBigCard'
 import PostList from '@/components/PostList'
-import PostFilter from '@/components/PostFilter'
 import PostLoadMore from '@/components/PostLoadMore'
 
 export default {
   data () {
     return {
-      currentFilter: 'Development',
-      filters: ['Music', 'Physic', 'Development'],
       allPosts: [],
       loading: false,
       hasMore: true,
@@ -34,7 +26,8 @@ export default {
       variables () {
         return {
           page: 0,
-          perPage: 5
+          perPage: 5,
+          tag_id: this.$router ? this.$router.history.current.params.id : null
         }
       }
     }
@@ -62,10 +55,9 @@ export default {
     }
   },
   components: {
-    PostFilter,
     PostList,
-    PostLoadMore,
-    PostBigCard
-  }
+    PostLoadMore
+  },
+  validate: ({ params }) => /^\d+$/.test(params.id)
 }
 </script>

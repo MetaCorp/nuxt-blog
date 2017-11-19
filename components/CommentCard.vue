@@ -13,9 +13,6 @@
 export default {
   props: {
     comment: Object
-  },
-  mounted () {
-    console.log('this.comment :', this.comment)
   }
 }
 </script>
