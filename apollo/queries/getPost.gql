@@ -1,0 +1,14 @@
+query getPost ($id: ID!) {
+  Post(id: $id) {
+    title
+    User {
+      name
+    }
+    Comments {
+      User {
+        name
+      }
+      body
+    }
+  }
+}

@@ -1,0 +1,9 @@
+query allPosts ($sortField: String, $sortOrder: String) {
+  allPosts(sortField: $sortField, sortOrder: $sortOrder) {
+    title
+    views
+    User {
+      name
+    }
+  }
+}

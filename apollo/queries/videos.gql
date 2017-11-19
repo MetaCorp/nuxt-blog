@@ -1,5 +1,0 @@
-query videos ($pageToken: String!) {
-  videos(pageToken: $pageToken) {
-    videos
-  }
-}
