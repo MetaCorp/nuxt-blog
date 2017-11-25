@@ -16,14 +16,14 @@
     <div class="footer p-8">
       <div class="max-w-md mx-auto">
         <new-comment-card></new-comment-card>
-        <comment-card v-for="comment in post.Comments" :key="comment.id" :comment="comment"></comment-card>
+        <comment-card v-for="comment in post.comments" :key="comment.id" :comment="comment"></comment-card>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import POSTS_GET from '@/apollo/queries/PostsGet'
+import POST_BY_ID from '@/apollo/queries/PostById'
 import CommentCard from '@/components/CommentCard'
 import NewCommentCard from '@/components/NewCommentCard'
 
@@ -35,16 +35,15 @@ export default {
   },
   apollo: {
     post: {
-      query: POSTS_GET,
-      prefetch: ({ route }) => ({ id: route.params.id }),
+      query: POST_BY_ID,
       variables () {
-        return { id: this.$route.params.id }
+        return { _id: this.$route.params.id }
       },
-      update: (data) => data.Post
+      update: (data) => data.postById
     }
   },
   layout: 'full',
-  validate: ({ params }) => /^\d+$/.test(params.id),
+  validate: ({ params }) => params.id && params.id.length === 24,
   components: {
     CommentCard,
     NewCommentCard

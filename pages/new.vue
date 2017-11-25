@@ -11,7 +11,7 @@
       </div>
     </div>
     <div class="flex justify-end max-w-lg p-4 mx-auto">
-      <button @click="createPost" class="bg-white hover:bg-blue text-blue-dark font-semibold hover:text-white py-2 px-4 border border-blue hover:border-transparent rounded">
+      <button @click="postCreate" class="bg-white hover:bg-blue text-blue-dark font-semibold hover:text-white py-2 px-4 border border-blue hover:border-transparent rounded">
         Send
       </button>
     </div>
@@ -19,8 +19,8 @@
 </template>
 
 <script>
-import POSTS_ALL from '@/apollo/queries/PostsAll'
-import POSTS_CREATE from '@/apollo/queries/PostsCreate'
+import POST_PAGINATION from '@/apollo/queries/PostPagination'
+import POST_CREATE from '@/apollo/queries/PostCreate'
 
 export default {
   data () {
@@ -32,41 +32,41 @@ export default {
     }
   },
   methods: {
-    createPost () {
+    postCreate () {
       const newPost = {
-        id: '7',
         title: 'Test',
         body: this.body,
-        user_id: '456',
-        tag_id: '202',
-        published_at: new Date()
+        userId: '5a1990998ea82dc069ec030b',
+        tagIds: ['202']
       }
       const queryVariables = {
         page: 0,
-        perPage: 5,
-        sortField: 'published_at',
-        sortOrder: 'desc'
+        perPage: 5
+        // sort: 'CREATEDAT_DESC'
       }
 
       this.$apollo.mutate({
-        mutation: POSTS_CREATE,
-        variables: newPost,
+        mutation: POST_CREATE,
+        variables: {
+          record: newPost
+        },
         // Update the cache with the result
         // The query will be updated with the optimistic response
         // and then with the real result of the mutation
-        update: (store, { data: { createPost } }) => {
+        update: (store, { data: { postCreate } }) => {
           console.log('store :', store)
+          console.log('postCreate :', postCreate)
           // Read the data from our cache for this query.
           const data = store.readQuery({
-            query: POSTS_ALL,
+            query: POST_PAGINATION,
             variables: queryVariables
           })
           // Add our tag from the mutation to the end
-          console.log('data :', data.allPosts)
-          data.allPosts.push(createPost)
+          console.log('data :', data)
+          data.postPagination.items.push(postCreate.record)
           // Write our data back to the cache.
           store.writeQuery({
-            query: POSTS_ALL,
+            query: POST_PAGINATION,
             data,
             variables: queryVariables
           })
@@ -76,23 +76,36 @@ export default {
         // so that the UI can react quickly and the user be happy
         optimisticResponse: {
           __typename: 'Mutation',
-          createPost: {
-            __typename: 'Post',
-            ...newPost,
-            views: 0,
-            User: {
-              __typename: 'User',
-              id: 0,
-              name: 'Me'
+          postCreate: {
+            __typename: 'CreateOnePostModelPayload',
+            recordId: -1,
+            record: {
+              __typename: 'Post',
+              _id: -1,
+              ...newPost,
+              views: 0,
+              createdAt: new Date(),
+              updatedAt: new Date(),
+              user: {
+                __typename: 'User',
+                _id: -1,
+                firstname: 'First',
+                lastname: 'Last'
+              },
+              tags: [{
+                __typename: 'Tag',
+                _id: -1,
+                name: 'Tag'
+              }]
             }
           }
         }
       }).then((data) => {
         // Result
-        console.log('createPost success: ', data)
+        console.log('postCreate success: ', data)
       }).catch((error) => {
         // Error
-        console.error('createPost failure: ', error)
+        console.error('postCreate failure: ', error)
         // We restore the initial user input
       })
     }

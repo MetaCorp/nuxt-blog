@@ -1,0 +1,21 @@
+mutation postCreate ($record: CreateOnePostModelInput!) {
+  postCreate(record: $record) {
+		recordId
+    record {
+      _id
+      title
+      body
+      updatedAt
+      createdAt
+      user {
+        _id
+        firstname
+        lastname
+      }
+      tags {
+        _id
+        name
+      }
+    }
+  }
+}

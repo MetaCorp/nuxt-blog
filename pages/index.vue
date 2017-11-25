@@ -1,17 +1,17 @@
 <template>
   <div>
-    <post-big-card :post="allPosts[0]"></post-big-card>
+    <post-big-card :post="postPagination.items[0]"></post-big-card>
     <div class="mt-6">
       <!-- <post-filter :filters="filters" v-model="filter"></post-filter> -->
       <post-sort :sortFields="sortFields" v-model="sort" ></post-sort>
-      <post-list :posts="allPosts"></post-list>
-      <post-load-more :fetchData="loadMore" :loading="loading" :hasMore="hasMore"></post-load-more>
+      <post-list :posts="postPagination.items"></post-list>
+      <post-load-more :fetchData="loadMore" :loading="loading" :hasMore="postPagination.pageInfo.hasNextPage"></post-load-more>
     </div>
   </div>
 </template>
 
 <script>
-import POSTS_ALL from '@/apollo/queries/PostsAll'
+import POST_PAGINATION from '@/apollo/queries/PostPagination'
 import PostBigCard from '@/components/PostBigCard'
 import PostList from '@/components/PostList'
 import PostFilter from '@/components/PostFilter'
@@ -33,16 +33,19 @@ export default {
         field: 'Date',
         order: 'desc'
       },
-      allPosts: [],
+      postPagination: {
+        items: [],
+        pageInfo: {}
+      },
       loading: false,
       hasMore: true,
       page: 0
     }
   },
   apollo: {
-    allPosts: {
+    postPagination: {
       prefetch: true,
-      query: POSTS_ALL,
+      query: POST_PAGINATION,
       variables () {
         return {
           page: 0,
@@ -57,7 +60,7 @@ export default {
     loadMore () {
       this.loading = true
       this.page++
-      this.$apollo.queries.allPosts.fetchMore({
+      this.$apollo.queries.postPagination.fetchMore({
         variables: {
           page: this.page,
           perPage: 5,
@@ -65,12 +68,12 @@ export default {
           sortOrder: this.sort.order
         },
         updateQuery: (previousResult, { fetchMoreResult }) => {
-          if (fetchMoreResult.allPosts.length === 0) this.hasMore = false
+          if (fetchMoreResult.posts.length === 0) this.hasMore = false
           this.loading = false
           return {
-            allPosts: [
-              ...previousResult.allPosts,
-              ...fetchMoreResult.allPosts
+            posts: [
+              ...previousResult.posts,
+              ...fetchMoreResult.posts
             ]
           }
         }
@@ -85,7 +88,7 @@ export default {
     sort (val, oldval) {
       this.page = 0// TODO Fix page (is not 0 each time)
       this.hasMore = true
-      this.$apollo.queries.allPosts.executeApollo({
+      this.$apollo.queries.posts.executeApollo({
         page: this.page,
         perPage: 5,
         sortField: sortFieldBinding[val.field],

@@ -1,0 +1,31 @@
+query postPagination(
+  $page: Int,
+  $perPage: Int,
+  $sort: SortFindManyPostModelInput,
+  $filter: FilterFindManyPostModelInput) {
+  postPagination(page: $page, perPage: $perPage, sort: $sort, filter: $filter) {
+    items {
+      _id
+      title
+      body
+      user {
+        _id
+        firstname
+        lastname
+      }
+      tags {
+        _id
+        name
+      }
+      createdAt
+      updatedAt
+    }
+    count
+    pageInfo {
+      pageCount
+      itemCount
+      hasNextPage
+      hasPreviousPage
+    }
+  }
+}

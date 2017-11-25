@@ -1,0 +1,17 @@
+query postById ($_id: MongoID!) {
+  postById (_id: $_id) {
+    title
+    body
+    user {
+      _id
+      firstname
+      lastname
+    }
+    tags {
+      _id
+      name
+    }
+    createdAt
+    updatedAt
+  }
+}

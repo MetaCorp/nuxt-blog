@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import POSTS_ALL from '@/apollo/queries/PostsAll'
+import POST_PAGINATION from '@/apollo/queries/PostPagination'
 import PostList from '@/components/PostList'
 import PostLoadMore from '@/components/PostLoadMore'
 import PostSort from '@/components/PostSort'
@@ -34,7 +34,7 @@ export default {
   apollo: {
     allPosts: {
       prefetch: true,
-      query: POSTS_ALL,
+      query: POST_PAGINATION,
       variables () {
         return {
           page: 0,
