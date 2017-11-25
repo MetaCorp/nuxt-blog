@@ -6,7 +6,7 @@
       </div>
     </nuxt-link>
     <div class="px-6 py-4 flex flex-col items-center">
-      <nuxt-link v-if="post.tags && post.tags.length" :to="'/tags/' + post.tags[0]._id">
+      <nuxt-link v-if="post.tags && post.tags.length" :to="'/tag/' + post.tags[0]._id">
         <div class="text-grey mb-2 capitalize">{{ post.tags[0].name }}</div>
       </nuxt-link>
       <nuxt-link :to="'/post/' + post._id">

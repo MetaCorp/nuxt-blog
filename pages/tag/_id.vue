@@ -1,8 +1,8 @@
 <template>
   <div>
     <post-sort :sortFields="sortFields" v-model="sort"></post-sort>
-    <post-list :posts="allPosts"></post-list>
-    <post-load-more :fetchData="loadMore" :loading="loading" :hasMore="hasMore"></post-load-more>
+    <post-list :posts="postPagination.items"></post-list>
+    <post-load-more :fetchData="loadMore" :loading="loading" :hasMore="postPagination.pageInfo.hasNextPage"></post-load-more>
   </div>
 </template>
 
@@ -20,9 +20,11 @@ const sortFieldBinding = {
 export default {
   data () {
     return {
-      allPosts: [],
+      postPagination: {
+        items: [],
+        pageInfo: {}
+      },
       loading: false,
-      hasMore: true,
       page: 0,
       sortFields: ['Date', 'Views'],
       sort: {
@@ -32,14 +34,16 @@ export default {
     }
   },
   apollo: {
-    allPosts: {
+    postPagination: {
       prefetch: true,
       query: POST_PAGINATION,
       variables () {
         return {
           page: 0,
           perPage: 5,
-          tag_id: this.$router ? this.$router.history.current.params.id : null
+          filter: {
+            tagIds: this.$router ? this.$router.history.current.params.id : null
+          }
         }
       }
     }
@@ -85,6 +89,6 @@ export default {
     PostLoadMore,
     PostSort
   },
-  validate: ({ params }) => /^\d+$/.test(params.id)
+  validate: ({ params }) => params.id && params.id.length === 24
 }
 </script>
