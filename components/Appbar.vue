@@ -11,6 +11,9 @@
         <li class="inline-block hover:text-blue-dark mx-4">
           <nuxt-link to="/test">Test</nuxt-link>
         </li>
+        <li class="inline-block hover:text-blue-dark mx-4">
+          <nuxt-link to="/new">New</nuxt-link>
+        </li>
       </ul>
     </span>
     <span class="flex items-center">

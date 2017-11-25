@@ -4,10 +4,12 @@
       
     </div>
 
-    <div class="max-w-md mx-auto p-8">
-      <h1>{{ post.title }}</h1>
-      <div class="mt-8">
-        <p>{{ post.body }}</p>
+    <div class="bg-white">
+      <div class="max-w-lg mx-auto p-8">
+        <h1>{{ post.title }}</h1>
+        <div class="mt-8">
+          <p>{{ post.body }}</p>
+        </div>
       </div>
     </div>
 
@@ -21,7 +23,7 @@
 </template>
 
 <script>
-import getPost from '@/apollo/queries/getPost'
+import POSTS_GET from '@/apollo/queries/PostsGet'
 import CommentCard from '@/components/CommentCard'
 import NewCommentCard from '@/components/NewCommentCard'
 
@@ -33,7 +35,7 @@ export default {
   },
   apollo: {
     post: {
-      query: getPost,
+      query: POSTS_GET,
       prefetch: ({ route }) => ({ id: route.params.id }),
       variables () {
         return { id: this.$route.params.id }

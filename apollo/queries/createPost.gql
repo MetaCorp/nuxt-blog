@@ -1,5 +1,0 @@
-mutation createPost ($id: ID!, $title: String!, $user_id: ID!) {
-  createPost(id: $id, title: $title, views: 0, user_id: $user_id) {
-    title
-  }
-}

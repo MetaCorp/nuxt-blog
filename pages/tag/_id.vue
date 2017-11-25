@@ -7,13 +7,13 @@
 </template>
 
 <script>
-import allPosts from '@/apollo/queries/allPosts'
+import POSTS_ALL from '@/apollo/queries/PostsAll'
 import PostList from '@/components/PostList'
 import PostLoadMore from '@/components/PostLoadMore'
 import PostSort from '@/components/PostSort'
 
 const sortFieldBinding = {
-  Date: 'publishedAt',
+  Date: 'published_at',
   Views: 'views'
 }
 
@@ -34,7 +34,7 @@ export default {
   apollo: {
     allPosts: {
       prefetch: true,
-      query: allPosts,
+      query: POSTS_ALL,
       variables () {
         return {
           page: 0,

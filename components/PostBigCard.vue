@@ -1,5 +1,5 @@
 <template>
-  <div class="m-2 rounded overflow-hidden shadow-md bg-white relative">
+  <div v-if="post" class="m-2 rounded overflow-hidden shadow-md bg-white relative">
     <img class="w-full" src="http://via.placeholder.com/350x150">
     <div class="absolute pin-b pin-l m-8">
       <nuxt-link v-if="post.Tag" :to="'/tag/' + post.Tag.id">

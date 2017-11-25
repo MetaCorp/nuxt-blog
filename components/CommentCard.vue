@@ -3,7 +3,7 @@
     <div class="px-6 py-4">
       <div class="text-lg mb-2">{{ comment.body }}</div>
       <p class="text-grey-darker text-base">
-        <nuxt-link :to="'/user/' + comment.User.id">{{ comment.User.name }}</nuxt-link> • {{ comment.publishedAt | fromNow }}
+        <nuxt-link :to="'/user/' + comment.User.id">{{ comment.User.name }}</nuxt-link> • {{ comment.published_at | fromNow }}
       </p>
     </div>
   </div>

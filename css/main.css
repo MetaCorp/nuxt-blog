@@ -40,3 +40,9 @@ a {
 body {
   background-color: #f3f7f9;
 }
+
+.ql-toolbar {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}

@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import allPosts from '@/apollo/queries/allPosts'
+import POSTS_ALL from '@/apollo/queries/PostsAll'
 import PostBigCard from '@/components/PostBigCard'
 import PostList from '@/components/PostList'
 import PostFilter from '@/components/PostFilter'
@@ -19,7 +19,7 @@ import PostSort from '@/components/PostSort'
 import PostLoadMore from '@/components/PostLoadMore'
 
 const sortFieldBinding = {
-  Date: 'publishedAt',
+  Date: 'published_at',
   Views: 'views'
 }
 
@@ -42,12 +42,12 @@ export default {
   apollo: {
     allPosts: {
       prefetch: true,
-      query: allPosts,
+      query: POSTS_ALL,
       variables () {
         return {
           page: 0,
           perPage: 5,
-          sortField: 'publishedAt',
+          sortField: 'published_at',
           sortOrder: 'desc'
         }
       }
@@ -77,6 +77,10 @@ export default {
       })
     }
   },
+  beforeRouteUpdate (to, from, next) {
+    console.log('to :', to)
+    next()
+  },
   watch: {
     sort (val, oldval) {
       this.page = 0// TODO Fix page (is not 0 each time)
@@ -84,9 +88,13 @@ export default {
       this.$apollo.queries.allPosts.executeApollo({
         page: this.page,
         perPage: 5,
-        sortField: sortFieldBinding[this.sort.field],
-        sortOrder: this.sort.order
+        sortField: sortFieldBinding[val.field],
+        sortOrder: val.order
       })
+      // this.$router.push({ query: {
+      //   sortField: sortFieldBinding[val.field],
+      //   sortOrder: val.order
+      // } })
     }
   },
   components: {

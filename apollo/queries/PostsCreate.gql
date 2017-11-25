@@ -1,0 +1,15 @@
+mutation createPost ($id: ID!, $title: String!, $body: String!, $user_id: ID!, $published_at: Date!) {
+  createPost(id: $id, title: $title, views: 0, body: $body, user_id: $user_id, published_at: $published_at) {
+    id
+    title
+    views
+    User {
+      id
+      name
+    }
+    Tag {
+      id
+      name
+    }
+  }
+}

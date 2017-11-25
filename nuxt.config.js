@@ -6,7 +6,7 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    title: 'MYoutube',
+    title: 'Nuxt Blog',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -17,7 +17,10 @@ module.exports = {
     ]
   },
   css: [
-    '~/css/main.css'
+    '~/css/main.css',
+    'quill/dist/quill.snow.css',
+  	'quill/dist/quill.bubble.css',
+  	'quill/dist/quill.core.css'
   ],
   /*
   ** Customize the progress bar color
@@ -28,7 +31,7 @@ module.exports = {
     '@nuxtjs/apollo'
   ],
   manifest: {
-    name: 'MYoutube',
+    name: 'Nuxt Blog',
     lang: 'en',
     theme_color: '#3B8070'
   },
@@ -38,7 +41,8 @@ module.exports = {
     }
   },
   plugins: [
-    '~plugins/filters.js'
+    '~plugins/filters.js',
+    { src: '~plugins/vue-quill-editor.js', ssr: false }
   ],
   /*
   ** Build configuration
