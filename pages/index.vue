@@ -18,19 +18,14 @@ import PostFilter from '@/components/PostFilter'
 import PostSort from '@/components/PostSort'
 import PostLoadMore from '@/components/PostLoadMore'
 
-const sortFieldBinding = {
-  Date: 'published_at',
-  Views: 'views'
-}
-
 export default {
   data () {
     return {
       filters: ['Music', 'Physic', 'Development'],
       filter: 'Development',
-      sortFields: ['Date', 'Views'],
+      sortFields: ['created_at', 'views'],
       sort: {
-        field: 'Date',
+        field: 'created_at',
         order: 'desc'
       },
       postPagination: {
@@ -38,20 +33,18 @@ export default {
         pageInfo: {}
       },
       loading: false,
-      hasMore: true,
-      page: 0
+      page: 1
     }
   },
   apollo: {
     postPagination: {
-      prefetch: true,
+      // prefetch: true,
       query: POST_PAGINATION,
       variables () {
         return {
-          page: 0,
+          page: 1,
           perPage: 5,
-          sortField: 'published_at',
-          sortOrder: 'desc'
+          sort: this.sortQuery || 'CREATED_AT_DESC'
         }
       }
     }
@@ -64,40 +57,44 @@ export default {
         variables: {
           page: this.page,
           perPage: 5,
-          sortField: sortFieldBinding[this.sort.field],
-          sortOrder: this.sort.order
+          sort: this.sortQuery || 'CREATED_AT_DESC'
         },
         updateQuery: (previousResult, { fetchMoreResult }) => {
-          if (fetchMoreResult.posts.length === 0) this.hasMore = false
           this.loading = false
           return {
-            posts: [
-              ...previousResult.posts,
-              ...fetchMoreResult.posts
-            ]
+            postPagination: {
+              ...fetchMoreResult.postPagination,
+              items: [
+                ...previousResult.postPagination.items,
+                ...fetchMoreResult.postPagination.items
+              ]
+            }
           }
         }
       })
     }
   },
-  beforeRouteUpdate (to, from, next) {
-    console.log('to :', to)
-    next()
+  computed: {
+    sortQuery () {
+      return this.sort.field.toUpperCase() + '_' + this.sort.order.toUpperCase()
+    }
+  },
+  created () {
+    this.sort = {
+      field: this.$route.query.sort || 'created_at',
+      order: this.$route.query.order || 'desc'
+    }
   },
   watch: {
-    sort (val, oldval) {
-      this.page = 0// TODO Fix page (is not 0 each time)
-      this.hasMore = true
-      this.$apollo.queries.posts.executeApollo({
-        page: this.page,
-        perPage: 5,
-        sortField: sortFieldBinding[val.field],
-        sortOrder: val.order
+    sort (newVal, oldVal) { // TODO
+      this.$router.push({
+        path: this.$route.path,
+        query: {
+          sort: newVal.field,
+          order: newVal.order,
+          filter: {}
+        }
       })
-      // this.$router.push({ query: {
-      //   sortField: sortFieldBinding[val.field],
-      //   sortOrder: val.order
-      // } })
     }
   },
   components: {

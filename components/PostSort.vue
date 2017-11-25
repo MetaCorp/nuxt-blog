@@ -1,7 +1,7 @@
 <template>
   <div class="flex justify-end mx-2">
       <select v-model="sortField" class="block appearance-none bg-transparent hover:bg-grey-light text-grey-darker py-3 px-4 pr-2 rounded-l">
-        <option v-for="(sortField, i) in sortFields" :key="i">{{ sortField }}</option>
+        <option v-for="(sortField, i) in sortFields" :key="i">{{ fieldToName[sortField] }}</option>
       </select>
       <button
         @click="changeOrder"
@@ -20,15 +20,27 @@ export default {
     value: Object,
     sortFields: Array
   },
+  data () {
+    return {
+      fieldToName: {
+        'created_at': 'Date',
+        views: 'Views'
+      },
+      nameToField: {
+        Date: 'created_at',
+        Views: 'views'
+      }
+    }
+  },
   computed: {
     sortField: {
       get: function () {
-        return this.value.field
+        return this.fieldToName[this.value.field]
       },
       set: function (newValue) {
         this.$emit('input', {
           ...this.value,
-          field: newValue
+          field: this.nameToField[newValue]
         })
       }
     }
