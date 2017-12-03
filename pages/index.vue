@@ -76,6 +76,7 @@ export default {
   },
   computed: {
     sortQuery () {
+      console.log('sortQuery :', this.sort.field.toUpperCase() + '_' + this.sort.order.toUpperCase())
       return this.sort.field.toUpperCase() + '_' + this.sort.order.toUpperCase()
     }
   },

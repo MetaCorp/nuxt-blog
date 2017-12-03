@@ -42,6 +42,7 @@ module.exports = {
   },
   plugins: [
     '~plugins/filters.js',
+    { src: '~plugins/v-tooltip.js', ssr: false },
     { src: '~plugins/vue-quill-editor.js', ssr: false }
   ],
   /*
