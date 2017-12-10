@@ -41,6 +41,11 @@ body {
   background-color: #f3f7f9;
 }
 
+#__nuxt {
+  display: flex;
+  min-height: 100vh;
+}
+
 .ql-toolbar {
   display: flex;
   justify-content: center;

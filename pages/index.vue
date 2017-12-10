@@ -4,7 +4,7 @@
     <div class="mt-6">
       <!-- <post-filter :filters="filters" v-model="filter"></post-filter> -->
       <post-sort :sortFields="sortFields" v-model="sort" ></post-sort>
-      <post-list :posts="postPagination.items"></post-list>
+      <post-list :posts="postPagination.items.slice(1)"></post-list>
       <post-load-more :fetchData="loadMore" :loading="loading" :hasMore="postPagination.pageInfo.hasNextPage"></post-load-more>
     </div>
   </div>

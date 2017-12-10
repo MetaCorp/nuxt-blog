@@ -1,5 +1,5 @@
 <template>
-  <div class="container flex mx-auto my-4">
+  <div class="container flex mx-auto py-4">
     <span>
       <img src="http://via.placeholder.com/150x150" height="48" alt="">
     </span>
@@ -16,7 +16,7 @@
         </li>
       </ul>
     </span>
-    <v-popover class="flex items-center">
+    <v-popover class="flex items-center" offset="8">
       <span class="flex items-center">
         <img src="http://via.placeholder.com/150x150" height="36" alt="" class="rounded-full mr-2">
         <p class="text-sm">sign in | sign up</p>

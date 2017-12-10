@@ -304,6 +304,7 @@ module.exports = {
     'none': 1,
     'tight': 1.25,
     'normal': 1.5,
+    'large': 1.75,
     'loose': 2,
   },
 
@@ -460,6 +461,7 @@ module.exports = {
     '16': '4rem',
     '24': '6rem',
     '32': '8rem',
+    '40': '10rem',
     '48': '12rem',
     '64': '16rem',
     '1/2': '50%',

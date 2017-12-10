@@ -4,11 +4,10 @@
       
     </div>
 
-    <div class="bg-white">
+    <div class="bg-white max-w-2xl mx-auto">
       <div class="max-w-lg mx-auto p-8">
         <h1>{{ post.title }}</h1>
-        <div class="mt-8">
-          <p>{{ post.body }}</p>
+        <div class="mt-8" v-html="post.body">
         </div>
       </div>
     </div>
